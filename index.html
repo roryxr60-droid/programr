@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بوابة البحث الرقمية في حيّ الحال</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-blue: #0284c7;
+            --accent-sky: #e0f2fe;
+            --text-dark: #0f172a;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 15px;
+        }
+
+        .font-amiri { font-family: 'Amiri', serif; }
+
+        .main-container {
+            width: 100%;
+            max-width: 900px;
+            background: #ffffff;
+            border: 2px solid #e2e8f0;
+            border-radius: 24px;
+            padding: 25px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+        }
+
+        .text-center { text-align: center; }
+        .mb-8 { margin-bottom: 2rem; }
+
+        .badge {
+            display: inline-block;
+            background: linear-gradient(to right, #0284c7, #2563eb);
+            color: #ffffff;
+            font-weight: 800;
+            font-size: 0.85rem;
+            padding: 6px 16px;
+            border-radius: 9999px;
+            margin-bottom: 12px;
+        }
+
+        .intro-box {
+            background: #f0f9ff;
+            border-right: 4px solid #0284c7;
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            line-height: 1.7;
+            margin-bottom: 25px;
+        }
+
+        .gates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 18px;
+        }
+
+        .gate-card {
+            background: #ffffff;
+            border: 2px solid #cbd5e1;
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .gate-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary-blue);
+            box-shadow: 0 10px 20px rgba(2, 132, 199, 0.15);
+        }
+
+        .card-header-badge {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+
+        .group-tag {
+            background: #e0f2fe;
+            color: #075985;
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+
+        .gate-card h3 { font-size: 1.3rem; margin-bottom: 6px; color: #0f172a; }
+        .gate-card p { color: #64748b; font-size: 0.88rem; }
+
+        .section-view { display: none; }
+        .section-view.active { display: block; }
+
+        .gate-header-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #cbd5e1;
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+
+        .timer-box {
+            background: #ffffff;
+            border: 2px solid #0284c7;
+            padding: 6px 14px;
+            border-radius: 14px;
+            font-weight: 900;
+            color: #0284c7;
+            font-family: monospace;
+            font-size: 1.2rem;
+        }
+
+        .task-desc-box {
+            background: #fffbeb;
+            border-right: 4px solid #f59e0b;
+            padding: 16px;
+            border-radius: 12px;
+            font-weight: 700;
+            line-height: 1.7;
+            white-space: pre-line;
+            margin-bottom: 20px;
+        }
+
+        .book-frame-container {
+            background: #ffffff;
+            border: 2px dashed #cbd5e1;
+            border-radius: 16px;
+            padding: 12px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .book-frame-container img {
+            max-width: 100%;
+            max-height: 400px;
+            border-radius: 8px;
+        }
+
+        .input-group { margin-bottom: 16px; }
+        .input-group label { display: block; font-weight: 800; margin-bottom: 6px; }
+
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
+            font-family: 'Tajawal', sans-serif;
+            font-size: 0.95rem;
+            resize: none;
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: #0284c7;
+            color: white;
+            font-weight: 800;
+            font-size: 1.05rem;
+            padding: 14px;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            margin-bottom: 12px;
+        }
+
+        .btn-secondary {
+            width: 100%;
+            background: #f1f5f9;
+            color: #334155;
+            font-weight: 700;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 12px;
+            cursor: pointer;
+        }
+
+        .result-card {
+            background: #f0f9ff;
+            border: 2px solid #0284c7;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 16px;
+            display: none;
+        }
+
+        .alert-box {
+            background: #fef2f2;
+            border: 2px solid #ef4444;
+            color: #b91c1c;
+            text-align: center;
+            font-weight: 800;
+            padding: 10px;
+            border-radius: 12px;
+            margin-bottom: 16px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="main-container">
+
+    <!-- الواجهة الرئيسية -->
+    <div id="home-section" class="section-view active">
+        <div class="text-center mb-8">
+            <span class="badge">✨ محطة التفاعل الذكية</span>
+            <h1 class="font-amiri" style="font-size: 2.2rem;">بوابة البحث الرقمية في حيّ الحال</h1>
+            <p style="color: #64748b; font-size: 0.85rem;">المنصة التعليمية التفاعلية للرحّالات المبدعات</p>
+        </div>
+
+        <div class="intro-box">
+            «مرحبًا بكن يا رحّالات مدينة النحو.. اختَرْن بوابة مجموعتكن، وابحثن عن مفتاح العبور بالدليل من الكتاب المدرسي».
+        </div>
+
+        <div class="gates-grid">
+            <div onclick="openGate(1)" class="gate-card">
+                <div class="card-header-badge"><span class="group-tag">المجموعة ١</span></div>
+                <h3 class="font-amiri">١. بوابة تعريف الحال</h3>
+                <p>استكشاف مفهوم الحال وشروطه الأساسية</p>
+            </div>
+
+            <div onclick="openGate(2)" class="gate-card">
+                <div class="card-header-badge"><span class="group-tag">المجموعة ٢</span></div>
+                <h3 class="font-amiri">٢. دار صاحب الحال</h3>
+                <p>تحديد صاحب الحال وعلاقته بتركيب الجملة</p>
+            </div>
+
+            <div onclick="openGate(3)" class="gate-card">
+                <div class="card-header-badge"><span class="group-tag">المجموعة ٣</span></div>
+                <h3 class="font-amiri">٣. قصر أنواع الحال</h3>
+                <p>تصنيف أنواع الأحوال وروابط الجملة الحالية</p>
+            </div>
+
+            <div onclick="openGate(4)" class="gate-card">
+                <div class="card-header-badge"><span class="group-tag">المجموعة ٤</span></div>
+                <h3 class="font-amiri">٤. سوق الإعراب</h3>
+                <p>تحليل العلامات الإعرابية الأصلية والفرعية</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- صفحة المهمة والبوابة -->
+    <div id="gate-section" class="section-view">
+        <div class="gate-header-bar">
+            <h2 id="gate-title" class="font-amiri" style="font-size: 1.8rem; color: #0284c7;">عنوان البوابة</h2>
+            <div class="timer-box" id="timer-display">05:00</div>
+        </div>
+
+        <div id="gate-task-desc" class="task-desc-box"></div>
+
+        <div class="book-frame-container">
+            <p style="font-size: 0.75rem; color: #94a3b8; margin-bottom: 6px;">📄 مرجع الكتاب المدرسي للمهمة</p>
+            <img id="gate-book-img" src="" alt="صفحة الكتاب">
+        </div>
+
+        <div class="input-group">
+            <label>💡 النتيجة التي توصلنا إليها:</label>
+            <textarea id="user-result" rows="3" placeholder="اكتبن الاستنتاج والتوضيح النهائي هنا..."></textarea>
+        </div>
+
+        <div class="input-group">
+            <label>📖 دليلنا المباشر من صفحة الكتاب:</label>
+            <textarea id="user-evidence" rows="2" placeholder="اكتبن المثال أو الدليل المباشر والنصي من صفحة الكتاب..."></textarea>
+        </div>
+
+        <div id="alert-box" class="alert-box">
+            ⚠️ «لم يكتمل مفتاح العبور؛ يُرجى استكمال كتابة النتيجة والدليل من صفحة الكتاب».
+        </div>
+
+        <button onclick="completeTask()" class="btn-submit">🚀 إتمام المهمة وإصدار بطاقة التفوق الرقمية</button>
+
+        <div id="result-display" class="result-card">
+            <h3 class="font-amiri text-center" style="font-size: 1.5rem; color: #0284c7;">📜 بطاقة النتيجة الرقمية المعتمدة</h3>
+            <p><strong>🏛️ البوابة:</strong> <span id="res-group"></span></p>
+            <p style="margin-top: 8px;"><strong>🎯 النتيجة:</strong> <span id="res-result"></span></p>
+            <p style="margin-top: 8px;"><strong>📖 الدليل:</strong> <span id="res-evidence"></span></p>
+            <p style="margin-top: 8px;"><strong>⏱️ الوقت:</strong> <span id="res-time"></span></p>
+            <button onclick="window.print()" class="btn-secondary" style="margin-top: 12px;">🖨️ طباعة / حفظ البطاقة PDF</button>
+        </div>
+
+        <button onclick="goHome()" class="btn-secondary" style="margin-top: 10px;">↩️ العودة إلى البوابات الرئيسية</button>
+    </div>
+
+</div>
+
+<script>
+    var gateData = {
+        1: {
+            title: "١. بوابة تعريف الحال",
+            task: "مهمة البحث والاستقصاء:\nتأملن الكلمات الملوّنة في النص: «شاهدةً – مشجّعين – ملبّيةً»، ثم:\n1. حلّلن الكلمات وقارنّ بينها من حيث التنكير، والحركة الإعرابية، والمعنى الذي أضافته إلى الجملة: هل وصفت هيئة أصحابها وقت وقوع الفعل أم صفةً ثابتة؟\n2. قالت إحدى الرحّالات: «الحال اسمٌ معرفةٌ يبيّن صفةً ثابتةً لصاحبه». قيّمن هذا التعريف، وصوّبن ما فيه، ثم صُغْنَ تعريفًا دقيقًا للحال مستنداتٍ إلى شواهد النص.\n\nدوّنّ النتيجة والدليل؛ استعدادًا لعرضهما على لوح مجلس سيبويه.",
+            imgSrc: "https://i.ibb.co/Z3fQppT/image.jpg"
+        },
+        2: {
+            title: "٢. دار صاحب الحال",
+            task: "مهمة البحث والاستقصاء:\nتأمّلن أمثلة الكتاب التي وردت فيها الأحوال: «صغيرًا – مظلومًا – قائلًا»، ثم نفّذن المهمات الآتية:\n1. حلّلن كل مثال، وحددن صاحب الحال وموقعه الإعرابي، وهل جاء اسمًا ظاهرًا أم ضميرًا.\n2. قارنّ بين أصحاب الحال في الأمثلة، ثم استنتجن الصفة المشتركة بينها.\n3. قيّمن العبارة الآتية مع ذكر الدليل: «صاحب الحال فاعل دائمًا».\n\nدوّنّ النتيجة والدليل من صفحة الكتاب؛ استعدادًا لعرضهما على لوح مجلس سيبويه.",
+            imgSrc: "https://i.ibb.co/4nt68GLV/image.jpg"
+        },
+        3: {
+            title: "٣. قصر أنواع الحال",
+            task: "مهمة البحث والاستقصاء:\nتأمّلن الأمثلة الثلاثة، ثم:\n1. صنّفن الأحوال فيها إلى: حال مفردة، وحال جملة اسمية، وحال جملة فعلية، وحددن صاحب الحال في كل مثال.\n2. قارنّ بين المثالين اللذين جاء فيهما الحال جملة، ثم بيّنَّ الرابط الذي ربط جملة الحال بصاحبها.\n\nدوّنّ النتيجة والدليل؛ استعدادًا لعرضهما على لوح مجلس سيبويه.",
+            imgSrc: "https://i.ibb.co/39YmdyzN/image.jpg"
+        },
+        4: {
+            title: "٤. سوق الإعراب",
+            task: "مهمة البحث والاستقصاء:\nتأمّلن الكلمتين «شاهدةً – مشجّعين» في النص، ثم:\n1. أعربن الكلمتين، وقارنّ بين علامتي نصبهما، ثم استنتجن سبب اختلاف العلامة.\n2. قالت إحدى الرحّالات: «كلُّ حالٍ منصوبٌ بالفتحة». قيّمن قولها وصوّبنه مستشهداتٍ بالمثالين.\n\nدوّنّ النتيجة والدليل؛ استعدادًا لعرضهما على لوح مجلس سيبويه.",
+            imgSrc: "https://i.ibb.co/R4YDBRqL/image.jpg"
+        }
+    };
+
+    var currentGate = 0;
+    var timerInterval = null;
+    var secondsLeft = 300;
+
+    function openGate(num) {
+        currentGate = num;
+
+        document.getElementById('home-section').style.display = 'none';
+        document.getElementById('gate-section').style.display = 'block';
+
+        var data = gateData[num];
+        document.getElementById('gate-title').innerText = data.title;
+        document.getElementById('gate-task-desc').innerText = data.task;
+        document.getElementById('gate-book-img').src = data.imgSrc;
+
+        document.getElementById('user-result').value = '';
+        document.getElementById('user-evidence').value = '';
+        document.getElementById('alert-box').style.display = 'none';
+        document.getElementById('result-display').style.display = 'none';
+
+        startTimer();
+    }
+
+    function startTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+        secondsLeft = 300;
+        updateTimerDisplay();
+
+        timerInterval = setInterval(function() {
+            secondsLeft--;
+            updateTimerDisplay();
+            if (secondsLeft <= 0) clearInterval(timerInterval);
+        }, 1000);
+    }
+
+    function updateTimerDisplay() {
+        var mins = Math.floor(secondsLeft / 60);
+        var secs = secondsLeft % 60;
+        document.getElementById('timer-display').innerText = (mins < 10 ? '0' : '') + mins + ':' + (secs < 10 ? '0' : '') + secs;
+    }
+
+    function completeTask() {
+        var res = document.getElementById('user-result').value.trim();
+        var ev = document.getElementById('user-evidence').value.trim();
+
+        if (!res || !ev) {
+            document.getElementById('alert-box').style.display = 'block';
+            return;
+        }
+
+        document.getElementById('alert-box').style.display = 'none';
+
+        var timeSpent = 300 - secondsLeft;
+        var m = Math.floor(timeSpent / 60);
+        var s = timeSpent % 60;
+
+        document.getElementById('res-group').innerText = gateData[currentGate].title;
+        document.getElementById('res-result').innerText = res;
+        document.getElementById('res-evidence').innerText = ev;
+        document.getElementById('res-time').innerText = m + ' دقيقة و ' + s + ' ثانية';
+
+        document.getElementById('result-display').style.display = 'block';
+    }
+
+    function goHome() {
+        if (timerInterval) clearInterval(timerInterval);
+        document.getElementById('gate-section').style.display = 'none';
+        document.getElementById('home-section').style.display = 'block';
+    }
+</script>
+</body>
+</html>
